@@ -1,0 +1,75 @@
+body{
+margin: 0;
+padding: 3em 0 3em 3em;
+overflow: hidden;
+}
+
+header{
+position: absolute;
+top: 0;
+left: 0;
+right: 0;
+z-index: 1;
+width: auto;
+height: 2em;
+padding: 0.25em;
+background-color:#222;
+}
+
+header h1{
+position: absolute;
+top: 0;
+left: 0;
+padding-left: 1em;
+margin: 0;
+color: white;
+}
+
+header .menu{
+cursor: pointer;
+position: fixed;
+height: 2em;
+padding: 1em;
+right: 0;
+top: 0;
+color: white;
+}
+
+nav{
+    position: absolute;
+    top:0;
+    bottom: 0;
+    right:0;
+    z-index: 3;
+    width:0; /* changed with java for pop out */
+    height: auto;
+    background-color:#222;
+    padding-top: 2em;
+}
+
+nav ul > li{
+padding: 5px;
+}
+
+nav ul > li a{
+color: white;
+text-decoration: none;
+}
+
+/* Home page login forms */
+.loginform{
+    padding:25px;
+    min-width: 175px;
+    width: 25%;
+    display: inline-block;
+    background: lightgrey;
+    margin: 0;
+    position: relative;
+    top: 10%;
+    left: 25%;
+}
+
+.results{
+    height: 100%;
+    overflow: auto;
+}
