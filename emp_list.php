@@ -30,29 +30,46 @@ session_start();
             <div class="col-sm-2 sidenav">
                 <?php require('nav.php'); ?>
             </div>
-            <div class="col-sm-8">
+            <div id='restricted' class="col-sm-8">
                 <h1>Employee List</h1>
                 <hr>
-                        <?php
-                        require_once './db_login.php';
-                        $sql = "SELECT * FROM EMPLOYEE";
-                        $result = $mysqli->query($sql);
-                        if ($result->num_rows > 0) {
-                            echo "<table class=\"table table-striped\">";
-                            echo "<thead><tr><th>ID</th><th>Name</th><th>Address</th><th>Phone Number</th></tr></thead>";
-                            // output data of each row
-                            while ($row = $result->fetch_assoc()) {
-                                echo "<tr><td>" . $row["empID"] . "</td><td>" . $row["empName"] . "</td><td>" . $row["empAddress"] .
-                                    "</td><td>" . $row["empPhoneNum"] . "</td></tr>";
-                            }
-                            echo "</table>";
-                        } else {
-                            echo "0 results";
-                        }
-                        $mysqli->close();
-                        ?>
-                <hr>
+                <?php
+                require_once './db_login.php';
+                $sql = "SELECT * FROM EMPLOYEE";
+                $result = $mysqli->query($sql);
+                if ($result->num_rows > 0) {
+                    echo "<table class=\"table table-striped\">";
+                    echo "<thead><tr><th>ID</th><th>Name</th><th>Address</th><th>Phone Number</th><th></th></tr></thead>";
+                    // output data of each row
+                    while ($row = $result->fetch_assoc()) {
+                        $emp = $row["empID"];
+                        echo "<tr><td>" . $emp . "</td><td>" . $row["empName"] . "</td><td>" . $row["empAddress"] .
+                            "</td><td>" . $row["empPhoneNum"] . "</td>
+                            <td><a href=\"update_emp.php?empID=$emp\">Update</a></td></tr>";
+                    }
+                    echo "</table>";
+                } else {
+                    echo "0 results";
+                }
+                $mysqli->close();
+                ?>
             </div>
+            <?php
+            if(isset($_SESSION['custid']))
+            {
+                echo"<div class='jumbotron jumbotron-fluid'>
+    <div class='container'>
+        <h1 class='display-3'>Access Denied</h1>
+        <p class='lead'>You are not allowed to be on this page!</p>
+        <hr>
+        <form action=\"cust_index.php\">
+            <button type=\"submit\" class=\"btn btn-default\">Back</button>
+        </form>
+    </div>
+</div>";
+
+                echo "<script>$('#restricted').hide();</script>";
+            }?>
         </div>
     </div>
 </body>

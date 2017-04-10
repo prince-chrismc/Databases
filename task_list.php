@@ -34,7 +34,7 @@ require_once 'db_login.php';
         <div class="col-sm-2 sidenav">
             <?php require('nav.php'); ?>
         </div>
-        <div class="col-sm-8">
+        <div id='restricted' class="col-sm-8">
             <h1>Task List</h1>
             <hr>
             <?php
@@ -48,12 +48,14 @@ require_once 'db_login.php';
             if ($result->num_rows > 0) {
                 echo "<table class=\"table table-striped\">";
                 echo "<thead><tr><th>Phase ID</th><th>Task ID</th><th>Phase Name</th><th>Task Details</th><th>Task Cost($)</th>
-                        <th>Time Estimate(h)</th><th>Start Date</th><th>End Date</th></tr></thead>";
+                        <th>Time Estimate(h)</th><th>Start Date</th><th>End Date</th><th></th></tr></thead>";
                 // output data of each row
                 while ($row = $result->fetch_assoc()) {
-                    echo "<tr><td>" . $row["phaseID"] . "</td><td>" . $row["taskID"] . "</td><td>" . $row["phaseName"] .
+                    $task = $row["taskID"];
+                    echo "<tr><td>" . $row["phaseID"] . "</td><td>" . $task . "</td><td>" . $row["phaseName"] .
                         "</td><td>" . $row["taskDetails"] . "</td><td>" . $row["taskCost"] . "</td><td>" .
-                        $row["taskEstimateHours"] . "</td><td>" . $row["taskDateStart"] . "</td><td>" . $row["taskDateEnd"] . "</td></tr>";
+                        $row["taskEstimateHours"] . "</td><td>" . $row["taskDateStart"] . "</td><td>" . $row["taskDateEnd"] . "</td>
+                        <td><a href=\"update_task.php?taskID=$task\">Update</a></td></tr>";
                 }
                 echo "</table>";
             } else {
@@ -61,8 +63,23 @@ require_once 'db_login.php';
             }
             $mysqli->close();
             ?>
-            <hr>
         </div>
+        <?php
+        if(isset($_SESSION['custid']))
+        {
+            echo"<div class='jumbotron jumbotron-fluid'>
+    <div class='container'>
+        <h1 class='display-3'>Access Denied</h1>
+        <p class='lead'>You are not allowed to be on this page!</p>
+        <hr>
+        <form action=\"cust_index.php\">
+            <button type=\"submit\" class=\"btn btn-default\">Back</button>
+        </form>
+    </div>
+</div>";
+
+            echo "<script>$('#restricted').hide();</script>";
+        }?>
     </div>
 </div>
 </body>

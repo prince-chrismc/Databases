@@ -34,7 +34,7 @@ session_start();
         <div class="col-sm-2 sidenav">
             <?php require('nav.php'); ?>
         </div>
-        <div class="col-sm-8">
+        <div id='restricted' class="col-sm-8">
             <h1>Customer List</h1>
             <hr>
             <?php
@@ -44,11 +44,13 @@ session_start();
             if ($result->num_rows > 0) {
 
                 echo "<table class=\"table table-striped\">";
-                echo "<thead><tr><th>ID</th><th>Name</th><th>Address</th><th>Phone Number</th></tr></thead>";
+                echo "<thead><tr><th>ID</th><th>Name</th><th>Address</th><th>Phone Number</th><th></th></tr></thead>";
                 // output data of each row
                 while ($row = $result->fetch_assoc()) {
-                    echo "<tr><td>" . $row["custID"] . "</td><td>" . $row["custName"] . "</td><td>" . $row["custAddress"] .
-                        "</td><td>" . $row["custPhoneNum"] . "</td></tr>";
+                    $custID = $row["custID"];
+                    echo "<tr><td>" . $custID . "</td><td>" . $row["custName"] . "</td><td>" . $row["custAddress"] .
+                        "</td><td>" . $row["custPhoneNum"] . "</td>
+                         <td><a href=\"update_cust.php?custID=$custID\">Update</a></td></tr>";
                 }
                 echo "</table>";
             } else {
@@ -56,8 +58,23 @@ session_start();
             }
             $mysqli->close();
             ?>
-            <hr>
         </div>
+        <?php
+        if(isset($_SESSION['custid']))
+        {
+            echo"<div class='jumbotron jumbotron-fluid'>
+    <div class='container'>
+        <h1 class='display-3'>Access Denied</h1>
+        <p class='lead'>You are not allowed to be on this page!</p>
+        <hr>
+        <form action=\"cust_index.php\">
+            <button type=\"submit\" class=\"btn btn-default\">Back</button>
+        </form>
+    </div>
+</div>";
+
+            echo "<script>$('#restricted').hide();</script>";
+        }?>
     </div>
 </div>
 </body>

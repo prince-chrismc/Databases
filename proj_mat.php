@@ -1,9 +1,9 @@
 <?php
 session_start();
 ?>
-<html>
+<html lang="en">
 <head>
-    <title>Team List</title>
+    <title>Materials List</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -14,12 +14,14 @@ session_start();
 <body>
 <?php
 require_once 'db_login.php';
+$projID = $_GET["projID"];
+$projName = $_GET["projName"];
 ?>
 
 <nav class="navbar navbar-inverse">
     <div class="container-fluid">
         <div class="navbar-header">
-            <a class="navbar-brand" href="bootstrap_index.php">Comp353 wsc_4</a>
+            <a class="navbar-brand" href="index.php">Comp353 wsc_4</a>
         </div>
         <div class="collapse navbar-collapse" id="myNavbar">
             <ul class="nav navbar-nav">
@@ -32,23 +34,32 @@ require_once 'db_login.php';
 <div class="container-fluid text-left">
     <div class="row content">
         <div class="col-sm-2 sidenav">
-            <?php require('nav.php'); ?>
+            <?php require 'nav_proj.php'?>
         </div>
-        <div  id='restricted' class="col-sm-8">
-            <h1>Team List</h1>
+        <div class="col-sm-8">
+            <h1>Project: <?=$projName?></h1>
             <hr>
             <?php
-            require_once './db_login.php';
-            $sql = "select teamID, teamName from TEAM
-            order by teamID";
+            $sql = "select PHASE.phaseName, MATERIAL.matID, matName, MATERIAL_SUPPLIER.matCost, deliveryTime, supName
+            from PHASE
+            join PHASE_MATERIAL on PHASE.phaseID=PHASE_MATERIAL.phaseID
+            join MATERIAL on PHASE_MATERIAL.matID=MATERIAL.matID
+            join MATERIAL_SUPPLIER on MATERIAL.matID=MATERIAL_SUPPLIER.matID
+            join SUPPLIER on MATERIAL_SUPPLIER.supID=SUPPLIER.supID
+            where projID=$projID
+            order by PHASE.phaseName, matName, matCost";
+
             $result = $mysqli->query($sql);
+
+            echo "<h2>Material List</h2>";
+
             if ($result->num_rows > 0) {
                 echo "<table class=\"table table-striped\">";
-                echo "<thead><tr><th>Team Name</th><th>Team ID</th><th></th></tr></thead>";
+                echo "<thead><thead><tr><th>Phase Name</th><th>ID</th><th>Name</th><th>Cost($)</th><th>Delivery Time(Days)</th><th>Supplier</th></tr></thead>";
                 // output data of each row
                 while ($row = $result->fetch_assoc()) {
-                    echo "<tr><td><a href=\"team_emp.php?teamID=$row[teamID]\">$row[teamName]</td><td>$row[teamID]</td>
-                          <td><a href=\"update_team.php?teamID=$row[teamID]\">Update</a></td></tr>";
+                    echo "<tr><td>$row[phaseName]</td><td>" . $row["matID"] . "</td><td>" . $row["matName"] . "</td><td>" .
+                        $row["matCost"] . "</td><td>" . $row["deliveryTime"] . "</td><td>" . $row["supName"] . "</td></tr>";
                 }
                 echo "</table>";
             } else {
@@ -57,22 +68,6 @@ require_once 'db_login.php';
             $mysqli->close();
             ?>
         </div>
-        <?php
-        if(isset($_SESSION['custid']))
-        {
-            echo"<div class='jumbotron jumbotron-fluid'>
-    <div class='container'>
-        <h1 class='display-3'>Access Denied</h1>
-        <p class='lead'>You are not allowed to be on this page!</p>
-        <hr>
-        <form action=\"cust_index.php\">
-            <button type=\"submit\" class=\"btn btn-default\">Back</button>
-        </form>
-    </div>
-</div>";
-
-            echo "<script>$('#restricted').hide();</script>";
-        }?>
     </div>
 </div>
 </body>

@@ -1,69 +1,70 @@
 <?php
 session_start();
 ?>
-<html>
+<html lang="en">
 <head>
-    <title>Phase List</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    <link rel="stylesheet" href="styling.css"/>
-    <script>
-        function openNav() { document.getElementById("nav").style.width = "250px"; }
-        function closeNav() { document.getElementById("nav").style.width = "0px"; }
-    </script>
+    <title>Project Phase Page</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="bootstrap_main.css">
 </head>
 <body>
 <?php
-
-require_once './db_login.php';
-
+require_once 'db_login.php';
 $projID = $_GET["projID"];
 $projName = $_GET["projName"];
-
-$sql = "select phaseID, phaseName, projName,
-phaseDetails, phaseDateStart, phaseDateEnd from PHASE
-left join PROJECT on PHASE.projID=PROJECT.projID
-where PROJECT.projID = $projID
-order by PHASE.phaseDateStart";
-
-$result = $mysqli->query($sql);
 ?>
 
-<header>
-    <h1>Project: <?=$projName?></h1>
-    <span class="menu" href="javascript:void(0)" onmouseover="openNav()">Project Menu</span>
-</header>
-
-<nav id="nav">
-    <ul>
-        <li><a href="javascript:void(0)" onclick="closeNav()"> Close</a></li>
-        <li><a href="index.php"> Home</a></li>
-        <li><a href="proj_team.php?projID=<?=$projID?>&projName=<?=$projName?>">Teams In The Project</a></li>
-        <li><a href="proj_phase.php?projID=<?=$projID?>&projName=<?=$projName?>">Phases In The Project</a></li>
-        <li><a href="proj_task.php?projID=<?=$projID?>&projName=<?=$projName?>">Tasks In The Project</a></li>
-        <li><a href="proj_trans.php?projID=<?=$projID?>&projName=<?=$projName?>">Transactions In The Project</a></li>
-    </ul>
+<nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="index.php">Comp353 wsc_4</a>
+        </div>
+        <div class="collapse navbar-collapse" id="myNavbar">
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="<?php if(isset($_SESSION['empid'])) echo 'emp_index.php'; else if(isset($_SESSION['custid'])) echo 'cust_index.php';?>">Home</a></li>
+            </ul>
+        </div>
+    </div>
 </nav>
 
-<h2>Phase List</h2>
+<div class="container-fluid text-left">
+    <div class="row content">
+        <div class="col-sm-2 sidenav">
+            <?php require 'nav_proj.php'?>
+        </div>
+        <div class="col-sm-8">
+            <h1>Project: <?=$projName?></h1>
+            <h2>Phase List</h2>
+            <hr>
+            <?php
+        $sql = "select phaseID, phaseName, projName,
+        phaseDetails, phaseDateStart, phaseDateEnd from PHASE
+        left join PROJECT on PHASE.projID=PROJECT.projID
+        where PROJECT.projID = $projID
+        order by PHASE.phaseDateStart";
 
-<?php
-if ($result->num_rows > 0) {
-    echo "<div class='results'>";
-    echo "<table border=1>";
-    echo "<tr><td>Phase Name</td><td>Details</td><td>Phase Start Date</td><td>Phase End Date</td></tr>";
-    // output data of each row
-    while ($row = $result->fetch_assoc()) {
-        echo "<tr><td><a href=\"phase_task.php?phaseID=$row[phaseID]&phaseName=$row[phaseName]&projName=$row[projName]\">
-                $row[phaseName]</td><td>$row[phaseDetails]</td><td>$row[phaseDateStart]</td><td>$row[phaseDateEnd]</td></tr>";
-    }
-    echo "</table>";
-    echo "</div>";
-} else {
-    echo "0 results";
-}
-$mysqli->close();
-
-
-?>
+        $result = $mysqli->query($sql);
+            if ($result->num_rows > 0) {
+                echo "<table class=\"table table-striped\">";
+                echo "<thead><tr><th>Phase Name</th><th>Details</th><th>Phase Start Date</th><th>Phase End Date</th><th></th></tr></thead>";
+                // output data of each row
+                while ($row = $result->fetch_assoc()) {
+                    echo "<tr><td><a href=\"phase_task.php?phaseID=$row[phaseID]&phaseName=$row[phaseName]&projName=$row[projName]\">
+                $row[phaseName]</td><td>$row[phaseDetails]</td><td>$row[phaseDateStart]</td><td>$row[phaseDateEnd]</td>
+                <td><a href=\"update_phase.php?phaseID=$row[phaseID]&projID=$projID\">Update</a></td></tr>";
+                }
+                echo "</table>";
+            } else {
+                echo "0 results";
+            }
+            $mysqli->close();
+        ?>
+        </div>
+    </div>
+</div>
 </body>
 </html>

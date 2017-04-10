@@ -16,19 +16,19 @@ session_start();
 
 <?php
 require_once 'db_login.php';
-$empID = $_SESSION['empid'];
 
-$sql = "select phaseID, phaseName from PHASE";
+$sql = isset($_SESSION['custid']) ? "SELECT a.projName, a.phaseID, a.phaseName FROM ( SELECT * FROM PROJECT natural left join PHASE WHERE custID=1 )  as a"
+    : "select phaseID, phaseName from PHASE";
 $result = $mysqli->query($sql);
 
 if(isset($_POST['submit'])) {
     require_once './db_login.php';
 
-    $cost = $_POST['cost'];
+    $cost = floatval($_POST['cost']);
     $startdate = (strlen($_POST['startdate']) == 0 ? "NULL" : "'".$_POST['startdate']."'");
     $enddate = (strlen($_POST['enddate']) == 0 ? "NULL" : "'".$_POST['enddate']."'");
     $estimate = $_POST['estimate'];
-    preg_match('/^[0-9]+/', $_POST['phaseid'],$matches);
+    preg_match('/^[0-9]+/', $_POST['phaseID'],$matches);
     $phaseid = $matches[0];
     $details = $_POST['details'];
 
@@ -36,9 +36,18 @@ if(isset($_POST['submit'])) {
         "($phaseid,'$details',$cost,$estimate,$startdate,$enddate)";
 
     if ($mysqli->query($sql2) === TRUE)
-        echo "<script>alert('Success')</script>";
+    {
+        echo "<div class=\"container\"><div id=\"myAlert\" class=\"alert alert-success alert-dismissable\">
+                <a href=\"#\" class=\"close\" data-dismiss=\"alert\" aria-label=\"close\">&times;</a>
+                <strong>Success!</strong> This alert box could indicate a successful or positive action.
+              </div></div>";
+    }
+
     else
-        echo "<script>alert('Please verify that your entry is correct')</script>";
+        echo "<div class=\"container\"><div id=\"myAlert\" class=\"alert alert-warning alert-dismissable\">
+                <a href=\"#\" class=\"close\" data-dismiss=\"alert\" aria-label=\"close\">&times;</a>
+                <strong>Danger!</strong> Indicates a warning that might need attention. You have entered incorrect information. ". mysqli_error($mysqli) ."
+              </div></div>";
 
     echo $mysqli->error;
 
@@ -47,39 +56,39 @@ if(isset($_POST['submit'])) {
 ?>
 
 <div class="container">
-    <form action="emp_index.php">
+    <form action="<? if(isset($_SESSION['custid'])) echo 'cust_index.php'; else echo 'emp_index.php';?>">
         <button type="submit" class="btn btn-default">Back</button>
     </form>
 
     <h2>Create New Task</h2>
     <form id="myform" method='POST'>
         <div class="form-group">
-            <label for="projID">Phase:</label>
-            <select class="form-control" id="sel1" name="phaseid">
+            <label for="phaseID">*Phase:</label>
+            <select class="form-control" id="phaseID" name="phaseID" required>
                 <option></option>
                 <?php
                 if ($result->num_rows > 0) {
                     while ($row = $result->fetch_assoc()) {
-                        echo "<option>" . $row['phaseID'] . " - " . $row['phaseName'] . "</option>";
+                        echo "<option>$row[phaseID] - $row[phaseName] for $row[projName]</option>";
                     }
                 }?>
             </select>
         </div>
         <div class="form-group">
-            <label for="dtl">Details:</label>
-            <input type="text" class="form-control" id="dtl" name="details" placeholder="Enter the task details">
+            <label for="dtl">*Details:</label>
+            <input type="text" class="form-control" id="dtl" name="details" placeholder="Enter the task details" required>
         </div>
         <div class="form-group">
-            <label for="bug">Cost:</label>
-            <input type="number" class="form-control" id="bug" step="500" name="cost" placeholder="Enter the task's cost">
+            <label for="bug">*Cost:</label>
+            <input type="number" class="form-control" id="bug" name="cost" min="0" max="4294967295" placeholder="Enter the task's cost" required>
         </div>
         <div class="form-group">
-            <label for="est">Estimated Hours:</label>
-            <input type="number" class="form-control" id="est" step="5" name="estimate" placeholder="Enter the task's estimated hours">
+            <label for="est">*Estimated Hours:</label>
+            <input type="number" class="form-control" id="est" name="estimate" min="0" max="4294967295" placeholder="Enter the task's estimated hours" required>
         </div>
         <div class="form-group">
-            <label for="start">Start Date:</label>
-            <input type="date" class="form-control" id="start" name="startdate" min="2000-01-01">
+            <label for="start">*Start Date:</label>
+            <input type="date" class="form-control" id="start" name="startdate" min="2000-01-01" required>
         </div>
         <div class="form-group">
             <label for="end">End Date:</label>

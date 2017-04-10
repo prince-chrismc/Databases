@@ -39,28 +39,38 @@ $custID = $_SESSION['custid'];
             <h1>Welcome <?php $name = "SELECT * FROM CUSTOMER where CUSTOMER.custID=$custID";$name2 = $mysqli->query($name);
             if ($name2->num_rows > 0) {$name3 = $name2->fetch_assoc(); echo $name3["custName"]; }?>!</h1>
             <hr>
+            <ul>
+                <li><a href="update_cust.php?custID=<? echo $custID?>">Update your information</a></li>
+                <li><a href="add_proj.php">Add a New Project</a></li>
+                <li><a href="add_phase.php">Add a New Phase</a></li>
+                <li><a href="add_task.php">Add a New Task</a></li>
+                <li><a href="add_tran.php">Add a New Transaction</a></li>
+            </ul>
+            <hr>
             <h2>Here's Your Project List</h2>
             <?php
-            $sql = "select PROJECT.projID, projName,  projDetails, budgetAmount, estimatedCost,
-            projDateStart, projDateEnd from CUSTOMER
-            left join CUSTOMER_PROJECT on CUSTOMER.custID=CUSTOMER_PROJECT.custID
-            left join PROJECT on CUSTOMER_PROJECT.projID=PROJECT.projID
-            where CUSTOMER.custID=$custID
+            $sql = "select projID, projName,  projDetails, budgetAmount, estimatedCost,
+            projDateStart, projDateEnd from PROJECT
+            where PROJECT.custID=$custID
             order by projName;";
             $result = $mysqli->query($sql);
-            if ($result->num_rows > 0) {
-
+            if ($result->num_rows > 0)
+            {
                 echo "<table class=\"table table-striped\">";
-                echo "<thead><tr><th>Project Name</th><th>Details</th><th>Budget Allocated($)</th><th>Estimated Costs($)</th>
-                        <th>Project Start Date</th><th>Project End Date</th></tr></thead>";
+                echo "<thead><tr><th>Project Name</th><th>Details</th><th>Budget Remaining($)</th><th>Estimated Costs($)</th>
+                        <th>Project Start Date</th><th>Project End Date</th><th></th></tr></thead>";
                 // output data of each row
-                while ($row = $result->fetch_assoc()) {
+                while ($row = $result->fetch_assoc())
+                {
                     echo "<tr><td><a href=\"proj_index.php?projID=$row[projID]\">$row[projName]</a>
                          </td><td>" . $row["projDetails"] . "</td><td>" . $row["budgetAmount"] . "</td><td>" . $row["estimatedCost"] .
-                        "</td><td>" . $row["projDateStart"] . "</td><td>" . $row["projDateEnd"] . "</td></tr>";
+                        "</td><td>" . $row["projDateStart"] . "</td><td>" . $row["projDateEnd"] . "</td>
+                         <td><a href=\"update_proj.php?projID=$row[projID]&custID=$custID\">Update</a></tr>";
                 }
                 echo "</table>";
-            } else {
+            }
+            else
+            {
                 echo "0 results";
             }
             $mysqli->close();

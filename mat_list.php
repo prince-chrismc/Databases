@@ -34,7 +34,7 @@ require_once 'db_login.php';
         <div class="col-sm-2 sidenav">
             <?php require('nav.php'); ?>
         </div>
-        <div class="col-sm-8">
+        <div id='restricted' class="col-sm-8">
             <h1>Material List</h1>
             <hr>
             <?php
@@ -43,15 +43,17 @@ require_once 'db_login.php';
             from MATERIAL
             left join MATERIAL_SUPPLIER on MATERIAL.matID=MATERIAL_SUPPLIER.matID
             left join SUPPLIER on MATERIAL_SUPPLIER.supID=SUPPLIER.supID
-            order by matName";
+            order by matName,matCost";
             $result = $mysqli->query($sql);
             if ($result->num_rows > 0) {
                 echo "<table class=\"table table-striped\">";
-                echo "<thead><tr><th>ID</th><th>Name</th><th>Cost($)</th><th>Delivery Time(Days)</th><th>Supplier</th></tr></thead>";
+                echo "<thead><tr><th>ID</th><th>Name</th><th>Cost($)</th><th>Delivery Time(Days)</th><th>Supplier</th><th></th><th></th></tr></thead>";
                 // output data of each row
                 while ($row = $result->fetch_assoc()) {
-                    echo "<tr><td>" . $row["matID"] . "</td><td>" . $row["matName"] . "</td><td>" .
-                        $row["matCost"] . "</td><td>" . $row["deliveryTime"] . "</td><td>" . $row["supName"] . "</td></tr>";
+                    $mat = $row["matID"];
+                    echo "<tr><td>" . $mat . "</td><td>" . $row["matName"] . "</td><td>" .
+                        $row["matCost"] . "</td><td>" . $row["deliveryTime"] . "</td><td>" . $row["supName"] . "</td>
+                        <td><a href=\"update_mat.php?matID=$mat\">Update</a></td></tr>";
                 }
                 echo "</table>";
             } else {
@@ -59,8 +61,23 @@ require_once 'db_login.php';
             }
             $mysqli->close();
             ?>
-            <hr>
         </div>
+        <?php
+        if(isset($_SESSION['custid']))
+        {
+            echo"<div class='jumbotron jumbotron-fluid'>
+    <div class='container'>
+        <h1 class='display-3'>Access Denied</h1>
+        <p class='lead'>You are not allowed to be on this page!</p>
+        <hr>
+        <form action=\"cust_index.php\">
+            <button type=\"submit\" class=\"btn btn-default\">Back</button>
+        </form>
+    </div>
+</div>";
+
+            echo "<script>$('#restricted').hide();</script>";
+        }?>
     </div>
 </div>
 </body>

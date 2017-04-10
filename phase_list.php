@@ -34,7 +34,7 @@ require_once 'db_login.php';
         <div class="col-sm-2 sidenav">
             <?php require('nav.php'); ?>
         </div>
-        <div class="col-sm-8">
+        <div id='restricted' class="col-sm-8">
             <h1>Phase List</h1>
             <hr>
             <?php
@@ -47,13 +47,16 @@ require_once 'db_login.php';
             if ($result->num_rows > 0) {
                 echo "<table class=\"table table-striped\">";
                 echo "<thead><tr><th>Phase ID</th><th>Project ID</th><th>Project Name</th><th>Phase Name</th>
-                        <th>Phase Details</th><th>Phase Start Date</th><th>Phase End Date</th></tr></thead>";
+                        <th>Phase Details</th><th>Phase Start Date</th><th>Phase End Date</th><th></th></tr></thead>";
                 // output data of each row
                 while ($row = $result->fetch_assoc()) {
-                    echo "<tr><td>" . $row["phaseID"] . "</td><td>" . $row["projID"] . "</td><td>" . $row["projName"] .
+                    $phase = $row["phaseID"];
+                    echo "<tr><td>" . $phase . "</td><td>" . $row["projID"] . "</td>
+                        <td><a href=\"proj_index.php?projID=$row[projID]\">" . $row["projName"] .
                         "</td><td><a href=\"phase_task.php?phaseID=$row[phaseID]&phaseName=$row[phaseName]&projName=$row[projName]\">
                         $row[phaseName]</td><td>" .$row["phaseDetails"] . "</td><td>" . $row["phaseDateStart"] . "</td>
-                        <td>" .$row["phaseDateEnd"] . "</td></tr>";
+                        <td>" .$row["phaseDateEnd"] . "</td>
+                        <td><a href=\"update_phase.php?phaseID=$phase\">Update</a></td></tr>";
                 }
                 echo "</table>";
             } else {
@@ -61,8 +64,23 @@ require_once 'db_login.php';
             }
             $mysqli->close();
             ?>
-            <hr>
         </div>
+        <?php
+        if(isset($_SESSION['custid']))
+        {
+            echo"<div class='jumbotron jumbotron-fluid'>
+    <div class='container'>
+        <h1 class='display-3'>Access Denied</h1>
+        <p class='lead'>You are not allowed to be on this page!</p>
+        <hr>
+        <form action=\"cust_index.php\">
+            <button type=\"submit\" class=\"btn btn-default\">Back</button>
+        </form>
+    </div>
+</div>";
+
+            echo "<script>$('#restricted').hide();</script>";
+        }?>
     </div>
 </div>
 </body>

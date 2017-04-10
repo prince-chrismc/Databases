@@ -1,8 +1,7 @@
 <?php
 if(isset($_SESSION['empid']))
 {
-    echo "<p><a href='emp_index.php'> Home</a></p>
-            <p><a href='proj_list.php'> Project List</a></p>
+    echo "<p><a href='emp_index.php'> Home</a></p><p><a href='proj_list.php'> Project List</a></p>
             <p><a href='cust_list.php'> Customer List</a></p>
             <p><a href='emp_list.php'> Employee List</a></p>
             <p><a href='mat_list.php'> Material List</a></p>
@@ -11,7 +10,7 @@ if(isset($_SESSION['empid']))
             <p><a href='phase_list.php'> Phase List</a></p>
             <p><a href='task_list.php'> Task List</a></p>
             <p><a href='trans_list.php'> Transaction List</a></p>
-            <p><a href='logout.php'> Log out </a></li>";
+            <p><a href='logout.php'> Log out </a></p>";
 }
 else if(isset($_SESSION['custid']))
 {
@@ -20,6 +19,7 @@ else if(isset($_SESSION['custid']))
 }
 else
 {
-    echo "<li><a href='index.php'> Home</a></li>";
+    echo "<p><a href='index.php'> Home</a></p>";
+    echo "<p><a href='https://docs.google.com/document/d/1rbqnSSBGrIB_8Ypsfw-aQbMuhpsKpF6FNVrTuUf6INA/edit?usp=sharing'>Check out our report!</a></p>";
 }
 ?>

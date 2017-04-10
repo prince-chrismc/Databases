@@ -15,9 +15,7 @@ session_start();
 <body style="margin-top: 3em">
 <?php
 require_once 'db_login.php';
-$empID = $_SESSION['empid'];
-
-$sql = "select PROJECT.projID, projName from PROJECT";
+$sql = isset($_SESSION['custid']) ? "SELECT a.projID, a.projName FROM (SELECT * FROM PROJECT WHERE custID=$_SESSION[custid]) as a" : "select PROJECT.projID, projName from PROJECT";
 $result = $mysqli->query($sql);
 
 if(isset($_POST['submit'])) {
@@ -30,28 +28,37 @@ if(isset($_POST['submit'])) {
 	preg_match('/^[0-9]+/', $_POST['projid'],$matches);
 	$projid = $matches[0];
 
-    $sql2 = "INSERT INTO wsc353_4.PHASE(projID,phaseName,phaseDetails,phaseDateStart,phaseDateEnd) VALUES".
+    $sql2 = "INSERT INTO PHASE(projID,phaseName,phaseDetails,phaseDateStart,phaseDateEnd) VALUES".
         "($projid,'$name','$details',$startdate,$enddate)";
 
-    if ($mysqli->query($sql2) === TRUE)
-        echo "<script>alert('Success')</script>";
+    if ($mysqli->query($sql2))
+    {
+        echo "<div class=\"container\"><div id=\"myAlert\" class=\"alert alert-success alert-dismissable\">
+                <a href=\"#\" class=\"close\" data-dismiss=\"alert\" aria-label=\"close\">&times;</a>
+                <strong>Success!</strong> This alert box could indicate a successful or positive action.
+              </div></div>";
+    }
+
     else
-        echo "<script>alert('Please verify that your entry is correct')</script>";
+        echo "<div class=\"container\"><div id=\"myAlert\" class=\"alert alert-warning alert-dismissable\">
+                <a href=\"#\" class=\"close\" data-dismiss=\"alert\" aria-label=\"close\">&times;</a>
+                <strong>Danger!</strong> Indicates a warning that might need attention. You have entered incorrect information.  ". mysqli_error($mysqli) ."
+              </div></div>";
 	
     $mysqli->close();	
 }
 ?>
 
 <div class="container">
-    <form action="emp_index.php">
+    <form action="<? if(isset($_SESSION['custid'])) echo 'cust_index.php'; else echo 'emp_index.php';?>">
         <button type="submit" class="btn btn-default">Back</button>
     </form>
 
         <h2>Create New Phase</h2>
         <form id="myform" method='POST'>
             <div class="form-group">
-                <label for="projID">Project:</label>
-                <select class="form-control" id="projID" name="projid">
+                <label for="projID">*Project:</label>
+                <select class="form-control" id="projID" name="projid" required>
                     <option></option>
                     <?php
                     if ($result->num_rows > 0) {
@@ -62,8 +69,8 @@ if(isset($_POST['submit'])) {
                 </select>
             </div>
             <div class="form-group">
-                <label for="name">Name:</label>
-                <input type="text" class="form-control" id="name" name="name" placeholder="Enter the phase name">
+                <label for="name">*Name:</label>
+                <input type="text" class="form-control" id="name" name="name" placeholder="Enter the phase name" required>
             </div>
             <div class="form-group">
                 <label for="dtl">Details:</label>
