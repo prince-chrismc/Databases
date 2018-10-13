@@ -1,0 +1,30 @@
+order of sytling in CSS is "deepest out", in other words the rules applies closest to that element.  element specific styling will be applied on top of embedded styling (from html head) onto styling from external file, onto browers defaut styling. for web developpers conflict resolution would be defining the second element specifically to override the conflict. the last factor is the !important tag which overrides any more specific rules. Other methods are from the addition of a class to a specific element of your own type. lastly there are id selectors to assigns styling to a certain element.
+
+
+<!-- your browser least important -->
+<head>
+    <link type="text/css" href="forth importancy"/>
+    <style type="text/css">
+        #third_importancy { property: value;}
+    </style>
+</head>
+<body>
+    <h2 style="this is the second most imprtant">hello</h2>
+    <h1 style="most important.css"> world</h1>
+</body>
+
+<!-- resolution -->
+<head>
+    <style type="text/css">
+        h1 { color: aliceblue;}
+        .first {color: aqua;}
+        #big {font-size: 10em;
+        color:red;}
+    </style>
+</head>
+<body>
+    <h1>ordinary</h1>
+    <h1 class="first"> class over ride</h1>
+    <h1 class="first" id="big">id overriding</h1>
+</body>
+

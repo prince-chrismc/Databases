@@ -1,0 +1,19 @@
+http://www.site.com/index.php?age=22&name=Obi+Wan+Kenobi&number=5435432156
+
+1- What is a query string and what purpose does it serve in server-side programming?
+2- Is a query string characteristic of a GET or POST request method?
+3- Which part of the URL is considered the query string?
+4- How many different data parameters are being passed?
+
+1:
+the query string is the section after the seperator character (question mark) which is part of the URL that contains data 
+submitted by the user in server-side programming. the parameters specified can impact the processing of dynamic on the client side websites.
+
+2:
+GET method because it is visible with the URL which would no occure with a POST method operation
+
+3:
+age=22&name=Obi+Wan+Kenobi&number=5435432156 
+
+4:
+three parameters, name age and number are being passed.

@@ -1,0 +1,25 @@
+<html>
+    <head>
+        <title>SOEN 287 Exercise </title>
+        <script>
+            window.onload = function getUserInfo(){
+                var person = prompt("Please enter your name", "John Smith");
+                var age = prompt("Please enter your age", "21");
+                if (person != null && !isNaN(age)) 
+                {
+                    document.getElementById("content").innerHTML = "Hi, my name is " + person + " and I’m " + age + " years old";
+                }
+                else
+                {
+                    document.getElementById("content").innerHTML = "bad input!";
+                }
+            }
+        </script>
+    </head>
+    <body>
+         <p><strong>User Information:</strong></p>
+         <div id="content"></div>
+        
+    </body>
+</html>
+    

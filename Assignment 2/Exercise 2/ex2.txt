@@ -1,0 +1,17 @@
+hello world
+
+Part 1:
+
+A. /[a-z]*\s[0-9]*/  'lower case letters' 'a space' 'numbers'
+B. /\d+\.\d*/        'at least 1 didgit' 'a dot' 'any number of digits'
+C. /^\d{3}\-\d{4}$/  'three not digits' 'hyphen' 'that ends with any 4 digits'
+D. /^[A-Z]\d[A-Z]\-\d[A-Z]\d/    'not a capital letter' 'a digit' 'a capital letter' 'hyphen' 'and another digit' ' a capital letter'
+E. /(July|August)\s+\d{1,2}(\s|,)\d{4}/g  '"jully" or "August"' 'at least one space' 'a digit from 0 to 99' 'a space or a coma' 'four digits' and the whole pattern needs to match the string!
+
+
+Part 2:
+
+Full Name: /[A-Z][a-z]{2,}(,|\s)[A-Z][a-z]{2,}
+Email: /(^\W|[a-zA-Z0-9]{1,}.[a-zA-Z0-9]{1,})+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/ //this might be too advanced didnt read insturctions copy&pasted my website one 
+
+Email: /\w+@\w+\.com/

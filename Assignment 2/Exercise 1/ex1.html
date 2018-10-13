@@ -1,0 +1,98 @@
+<head>
+    <title>Hello JS</title>
+    <script type="text/javascript">
+        function addNumber(array){
+            var total = 0;
+            for(var i = 0; i < arguments.length; i += 1)
+            {
+                for(var nums in array)
+                {
+                    if(!isNaN(array[nums]))
+                    {
+                        total += array[nums];
+                    }
+                }
+            }
+            return total;
+        }
+    </script>
+    <script type="text/javascript">
+        function getCurrentDate(){
+            var d = new Date();
+            var days = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+            var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+            
+            return "" + days[d.getDay()] + ", " + months[d.getMonth()] + " " + d.getDate() + ", " + (1900 + d.getYear());
+        }
+    </script>
+    <script type="text/javascript">
+        function arrayToString(array){
+            var str = "";
+            for(var i = 0; i < arguments.length; i += 1)
+            {
+                for(var words in array)
+                {
+                    if(isNaN(array[words]))
+                    {
+                        str += array[words] + " ";
+                    }
+                }
+            }
+            return str;
+        }
+    </script>
+    <script type="text/javascript">
+        function findMaxNumber(num){
+            var max = 0;
+            for (var i = 0; i < arguments.length; i++) {
+                if (!isNaN(arguments[i] && arguments[i] > max)){
+                    max = arguments[i];
+                }
+            }
+            return max;  
+        }
+    </script>
+    <script type="text/javascript">
+        function getDigits(s){
+            return s.replace(/\D/g, '');
+        }
+    </script>
+    <script type="text/javascript">
+        function reverseString(s){
+            return s.split("").reverse().join("");
+        }
+    </script>
+</head>
+<body>
+    <h1 id="sum">Sum of 1,2,3,4,5,-9 equals: </h1>
+    <script>
+        document.getElementById("sum").innerHTML += addNumber([1,2,3,4,5,-9]);
+    </script>
+    <br/>
+    <h1 id="date">Today is: </h1>
+    <script>
+        document.getElementById("date").innerHTML += getCurrentDate();
+    </script>
+    <br/>
+    <h1 id="words">Cat'ing the words "the" "cat" "saw" "the" "dog" returns: </h1>
+    <script>
+        document.getElementById("words").innerHTML += arrayToString(["the","cat","saw","the","dog"])
+    </script>
+    <br/>
+    <h1 id="max">THe max of 156, 1564, 8, 9874, 4894 is: </h1>
+    <script>
+        document.getElementById("max").innerHTML += findMaxNumber(156, 1564, 8, 9874, 4894);
+    </script>
+    <br/>
+    <h1 id="dts">T43 D1g1t5 1n 5tr1ng ar3: </h1>
+    <script>
+        document.getElementById("dts").innerHTML += getDigits("T43 D1g1t5 1n 5tr1ng ar3");
+    </script>
+    <br/>
+    <h1 id="rev">Hello World! Hope I'm Working - </h1>
+    <script>
+        document.getElementById("rev").innerHTML += reverseString("Hello World! Hope I'm Working");
+    </script>
+    
+
+</body>  

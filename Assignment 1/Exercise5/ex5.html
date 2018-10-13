@@ -1,0 +1,185 @@
+<head>
+    <title>ex5 - order form</title>
+    <style type="text/css">
+        
+        background{
+            position: fixed;
+            top: 0;
+            left: 0;
+            text-align: center;
+            height: 100%;
+            width: 100%;
+            
+            background: url(http://christophermcarthur.com/images/montreal-banner-blur.jpg) no-repeat center center;
+            background-size: cover;
+            
+            z-index: -1;
+        }
+        
+        section{
+            margin: 100px 50px 50px 50px;
+            color: white;
+            background-color: rgba(255,255,255,0.55);
+            text-align: center;
+        }
+        
+        header{
+            background-color: rgba(200,200,255,0.85);
+            border: groove 5px white;
+            
+        }
+        
+        div{
+            width: auto;
+            margin-left: 10%;
+            margin-right: 10%;
+        }
+        
+        div .container{
+            padding: 15px;
+            
+        }
+        div .inline input{
+           width: 40%;
+        }
+        div .inline select{
+           width: 55%;
+        }
+        div .card{
+            text-align: left;
+        }
+        div .card input{
+            display: inline;
+            width: 20%;
+            text-align: left;
+            padding-left: 15%;
+        }
+        input, select, textarea{
+            width: 100%;
+            margin: 3px;
+        }
+        
+        option .default{
+            color: lightgray;
+        }
+    </style>
+</head>
+
+<body>
+    <background>Picture</background>
+    
+    <section>
+        <header>
+            <h2>Order your Book</h2>
+            <p>Thank you for using chris' book buying service</p>
+        </header>
+    
+    
+                    <form id="myform" method="post">
+                    <div>
+                        <h4>Book Details</h4>
+                        <div class="container">
+                            <div>
+                                <input placeholder="Book Title" type="text"/>
+                            </div>
+                            <div>
+                                <input placeholder="Arthor" type="text"/>
+                            </div>
+                            <div>
+                                <input placeholder="Quantity" type="number" min="0" max="99"/>
+                            </div>
+                            <div>
+                                <select>
+                                    <option class="default"> - Cover -</option>
+                                    <option>Paper Back</option>
+                                    <option>Hard Cover</option>
+                                </select>
+                            </div>
+                        </div>
+
+
+                        <h4>Delivery Information</h4>
+                        <div class="container">
+                            <div>
+                                <input placeholder="Name" type="text"/>
+                                <input placeholder="Email" type="email"/>
+                            </div>
+                            <div>
+                                <input placeholder="Contact Number" type="text"/>
+                            </div>
+                            <div>
+                                <input placeholder="Street Adress" type="text"/>
+                                <input placeholder="Adress Line 2" type="text"/>
+                            </div>
+                            <div class="inline">
+                                <input placeholder="Postal Code" type="text"/>
+                                <select>
+                                    <option class="default" value="null">- Provience -</option>
+                                    <option value="AB">Alberta</option>
+                                    <option value="BC">British Columbia</option>
+                                    <option value="MB">Manitoba</option>
+                                    <option value="NB">New Brunswick</option>
+                                    <option value="NL">Newfoundland and Labrador</option>
+                                    <option value="NS">Nova Scotia</option>
+                                    <option value="ON">Ontario</option>
+                                    <option value="PE">Prince Edward Island</option>
+                                    <option value="QC">Quebec</option>
+                                    <option value="SK">Saskatchewan</option>
+                                    <option value="NT">Northwest Territories</option>
+                                    <option value="NU">Nunavut</option>
+                                    <option value="YT">Yukon</option>
+                                </select>
+                            </div>
+                            <div>
+                                <textarea placeholder="Special Requests" rows="4"></textarea>
+                            </div>
+                        
+                        </div>
+                        
+                        
+                        
+                        
+                        
+                        
+
+
+                        <h4>Payment Information</h4>
+                        <div class="container">
+                            <div>
+                                <input placeholder="Card Number" type="text"/>
+                                <input placeholder="Name of Card Holder" type="text"/>
+                                <input placeholder="CVS code" type="text"/>
+                                <input placeholder="Expiration data dd/mm/yyyy" type="date"/>
+                            </div>
+                            <div>
+                                <div class="card">
+                                    <input type="checkbox" >
+                                    <label>Visa</label>
+                                </div>
+                                <div class="card">
+                                    <input type="checkbox" >
+                                    <label>MasterCard</label>
+                                </div>
+                                <div class="card">
+                                    <input type="checkbox" >
+                                    <label>American Express</label>
+                                </div>
+                            </div>
+                            <div>
+                                <textarea name="message" placeholder="Message" rows="4"></textarea>
+                            </div>
+                        </div>
+                        
+                        <div class="container">
+                             <div>
+                                 <input type="submit" class="special" value="Send"/>
+                                <input type="reset" class="alt" value="Reset" onClick="clearForm();"/>
+                            </div>
+                        </div>
+                        
+                    </div>
+                   
+            </form>
+        </section>
+</body>
+
